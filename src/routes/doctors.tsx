@@ -1,6 +1,7 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { doctors } from "@/data/doctors";
 import { GraduationCap, Award } from "lucide-react";
+import { BookButton } from "@/components/BookButton";
 
 export const Route = createFileRoute("/doctors")({
   head: () => ({
@@ -45,7 +46,9 @@ function DoctorsPage() {
                     <span key={s} className="px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold">{s}</span>
                   ))}
                 </div>
-                <Link to="/contact" className="inline-block mt-6 px-5 py-2.5 rounded-full bg-accent text-accent-foreground font-semibold text-sm">Book Appointment</Link>
+                <BookButton doctor={d.name} className="inline-block mt-6 px-5 py-2.5 rounded-full bg-accent text-accent-foreground font-semibold text-sm">
+                  Book Appointment
+                </BookButton>
               </div>
             </div>
           ))}

@@ -1,6 +1,7 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { services } from "@/data/services";
 import { Check } from "lucide-react";
+import { BookButton } from "@/components/BookButton";
 
 export const Route = createFileRoute("/services")({
   head: () => ({
@@ -69,12 +70,12 @@ function ServicesPage() {
                       </div>
                     ))}
                   </div>
-                  <Link
-                    to="/contact"
+                  <BookButton
+                    service={cat.category}
                     className="inline-block mt-6 px-5 py-2.5 rounded-full bg-gradient-warm text-primary-foreground font-semibold shadow-soft"
                   >
                     Book {cat.category.split(" ")[0]} Consultation
-                  </Link>
+                  </BookButton>
                 </div>
               </article>
             );
@@ -87,7 +88,9 @@ function ServicesPage() {
           <div className="rounded-3xl bg-accent text-accent-foreground p-10 text-center shadow-warm">
             <h3 className="text-2xl font-bold">Not sure which treatment you need?</h3>
             <p className="mt-2 opacity-90">Get a free consultation with our specialists.</p>
-            <Link to="/contact" className="inline-block mt-5 px-6 py-3 rounded-full bg-gradient-warm text-primary-foreground font-semibold">Book Free Consultation</Link>
+            <BookButton className="inline-block mt-5 px-6 py-3 rounded-full bg-gradient-warm text-primary-foreground font-semibold">
+              Book Free Consultation
+            </BookButton>
           </div>
         </div>
       </section>
