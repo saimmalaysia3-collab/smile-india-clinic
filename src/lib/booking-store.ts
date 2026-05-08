@@ -66,7 +66,7 @@ export function generateRef(date: Date): string {
   return `SDC-${ymd}-${rand}`;
 }
 
-export function saveBooking(b: Omit<Booking, "ref" | "createdAt"> & { date: Date | string }): Booking {
+export function saveBooking(b: Omit<Booking, "ref" | "createdAt" | "date"> & { date: Date | string }): Booking {
   const dateStr = typeof b.date === "string" ? b.date : format(b.date, "yyyy-MM-dd");
   const dateObj = typeof b.date === "string" ? new Date(b.date) : b.date;
   const booking: Booking = {
