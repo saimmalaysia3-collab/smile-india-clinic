@@ -22,9 +22,9 @@ export function Footer() {
         <div>
           <div className="font-semibold mb-3">Contact</div>
           <ul className="space-y-2 text-sm opacity-80">
-            <li className="flex gap-2"><Phone className="w-4 h-4" /> +91 99999 99999</li>
-            <li className="flex gap-2"><Mail className="w-4 h-4" /> care@smiledental.in</li>
-            <li className="flex gap-2"><MapPin className="w-4 h-4" /> 12, MG Road, New Delhi</li>
+            <li className="flex gap-2"><Phone className="w-4 h-4" /><span>+91 99999 99999</span></li>
+            <li className="flex gap-2"><Mail className="w-4 h-4" /><span>care@smiledental.in</span></li>
+            <li className="flex gap-2"><MapPin className="w-4 h-4" /><span>12, MG Road, New Delhi</span></li>
           </ul>
         </div>
         <div>
