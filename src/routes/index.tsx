@@ -1,9 +1,11 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { Link } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { useState } from "react";
 import heroImg from "@/assets/hero-clinic.jpg";
 import { services } from "@/data/services";
 import { doctors, testimonials } from "@/data/doctors";
-import { Star, ShieldCheck, Award, Heart, Clock, Phone } from "lucide-react";
+import { Star, ShieldCheck, Award, Heart, Clock, Phone, Eye } from "lucide-react";
+import { BookButton } from "@/components/BookButton";
+import { DoctorProfileDialog } from "@/components/DoctorProfileDialog";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -18,6 +20,7 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
+  const [activeDoctor, setActiveDoctor] = useState<(typeof doctors)[number] | null>(null);
   return (
     <>
       {/* HERO */}
@@ -34,7 +37,9 @@ function Index() {
               India's trusted family dental clinic — where world-class technology meets warm Indian hospitality. Painless treatments. Honest prices. Lifelong smiles.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <Link to="/contact" className="px-6 py-3 rounded-full bg-gradient-warm text-primary-foreground font-semibold shadow-warm hover:opacity-90">Book Free Consultation</Link>
+              <BookButton className="px-6 py-3 rounded-full bg-gradient-warm text-primary-foreground font-semibold shadow-warm hover:opacity-90">
+                Book Free Consultation
+              </BookButton>
               <Link to="/services" className="px-6 py-3 rounded-full border-2 border-accent text-accent font-semibold hover:bg-accent hover:text-accent-foreground transition">Explore Services</Link>
             </div>
             <div className="mt-10 grid grid-cols-3 gap-6">
@@ -123,16 +128,24 @@ function Index() {
           </div>
           <div className="mt-12 grid md:grid-cols-3 gap-8">
             {doctors.map((d) => (
-              <div key={d.name} className="group">
+              <button
+                key={d.name}
+                type="button"
+                onClick={() => setActiveDoctor(d)}
+                className="group text-left"
+              >
                 <div className="relative overflow-hidden rounded-2xl shadow-soft">
                   <img src={d.image} alt={d.name} loading="lazy" width={768} height={768} className="w-full aspect-square object-cover group-hover:scale-105 transition duration-500" />
                   <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-accent/95 to-transparent p-5 text-accent-foreground">
                     <div className="font-display text-xl font-bold">{d.name}</div>
                     <div className="text-xs opacity-90">{d.role}</div>
                   </div>
+                  <span className="absolute top-3 right-3 inline-flex items-center gap-1 text-xs font-semibold bg-card/90 text-foreground px-2.5 py-1 rounded-full opacity-0 group-hover:opacity-100 transition">
+                    <Eye className="w-3.5 h-3.5" /> View profile
+                  </span>
                 </div>
                 <div className="mt-4 text-sm text-muted-foreground">{d.qualifications} · {d.experience}</div>
-              </div>
+              </button>
             ))}
           </div>
           <div className="text-center mt-10">
@@ -177,10 +190,14 @@ function Index() {
           <div className="rounded-3xl bg-gradient-hero text-primary-foreground p-10 lg:p-14 text-center shadow-warm">
             <h2 className="text-3xl lg:text-4xl font-bold">Ready for your dream smile?</h2>
             <p className="mt-3 opacity-90">Free consultation · No hidden charges · EMI options available</p>
-            <Link to="/contact" className="inline-block mt-6 px-8 py-3 rounded-full bg-card text-accent font-bold hover:scale-105 transition">Book Appointment</Link>
+            <BookButton className="inline-block mt-6 px-8 py-3 rounded-full bg-card text-accent font-bold hover:scale-105 transition">
+              Book Appointment
+            </BookButton>
           </div>
         </div>
       </section>
+
+      <DoctorProfileDialog doctor={activeDoctor} open={!!activeDoctor} onOpenChange={(v) => !v && setActiveDoctor(null)} />
     </>
   );
 }

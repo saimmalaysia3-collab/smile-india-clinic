@@ -3,10 +3,12 @@ import { useState } from "react";
 import { Menu, X, Phone, ChevronDown } from "lucide-react";
 import { services } from "@/data/services";
 import type { ServiceCategory } from "@/data/services";
+import { useBooking } from "@/components/BookingDialog";
 
 export function Header() {
   const [open, setOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
+  const { open: openBooking } = useBooking();
 
   return (
     <header className="sticky top-0 z-50 bg-background/85 backdrop-blur border-b border-border">
@@ -57,9 +59,13 @@ export function Header() {
           <a href="tel:+919999999999" className="flex items-center gap-2 text-sm font-semibold text-accent">
             <Phone className="w-4 h-4" /> +91 99999 99999
           </a>
-          <Link to="/contact" className="px-4 py-2 rounded-full bg-gradient-warm text-primary-foreground text-sm font-semibold shadow-soft hover:opacity-90">
+          <button
+            type="button"
+            onClick={() => openBooking()}
+            className="px-4 py-2 rounded-full bg-gradient-warm text-primary-foreground text-sm font-semibold shadow-soft hover:opacity-90"
+          >
             Book Appointment
-          </Link>
+          </button>
         </div>
 
         <button className="lg:hidden p-2" onClick={() => setOpen(!open)} aria-label="Menu">
@@ -75,7 +81,13 @@ export function Header() {
             <Link to="/doctors" onClick={() => setOpen(false)}>Meet Our Doctors</Link>
             <Link to="/testimonials" onClick={() => setOpen(false)}>Testimonials</Link>
             <Link to="/contact" onClick={() => setOpen(false)}>Contact</Link>
-            <Link to="/contact" onClick={() => setOpen(false)} className="px-4 py-2 rounded-full bg-gradient-warm text-primary-foreground text-center font-semibold">Book Appointment</Link>
+            <button
+              type="button"
+              onClick={() => { setOpen(false); openBooking(); }}
+              className="px-4 py-2 rounded-full bg-gradient-warm text-primary-foreground text-center font-semibold"
+            >
+              Book Appointment
+            </button>
           </div>
         </div>
       )}
