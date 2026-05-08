@@ -25,32 +25,58 @@ function ServicesPage() {
       </section>
 
       <section className="py-16">
-        <div className="mx-auto max-w-6xl px-6 space-y-16">
+        <div className="mx-auto max-w-6xl px-6 space-y-20">
           {services.map((cat, idx) => {
             const Icon = cat.icon;
+            const reverse = idx % 2 === 1;
             return (
-              <div key={cat.category} id={cat.category.toLowerCase().replace(/\s+/g, "-")} className={`grid lg:grid-cols-3 gap-8 ${idx % 2 ? "lg:[&>div:first-child]:order-2" : ""}`}>
-                <div className="lg:col-span-1">
-                  <div className="w-14 h-14 rounded-2xl bg-gradient-warm flex items-center justify-center text-primary-foreground shadow-soft">
-                    <Icon className="w-7 h-7" />
-                  </div>
-                  <h2 className="mt-5 text-3xl font-bold">{cat.category}</h2>
-                  <p className="mt-2 text-primary font-medium">{cat.tagline}</p>
+              <article
+                key={cat.category}
+                id={cat.category.toLowerCase().replace(/\s+/g, "-")}
+                className="grid lg:grid-cols-2 gap-10 items-center"
+              >
+                <div className={`overflow-hidden rounded-3xl shadow-warm ${reverse ? "lg:order-2" : ""}`}>
+                  <img
+                    src={cat.image}
+                    alt={`${cat.category} at Smile Dental Clinic`}
+                    width={768}
+                    height={512}
+                    loading="lazy"
+                    className="w-full h-72 lg:h-80 object-cover"
+                  />
                 </div>
-                <div className="lg:col-span-2 grid sm:grid-cols-2 gap-4">
-                  {cat.items.map((it) => (
-                    <div key={it.name} className="bg-card border border-border rounded-2xl p-5 shadow-soft hover:shadow-warm transition">
-                      <div className="flex items-start gap-3">
-                        <span className="w-7 h-7 rounded-full bg-primary/10 text-primary flex items-center justify-center flex-shrink-0"><Check className="w-4 h-4" /></span>
-                        <div>
-                          <div className="font-semibold">{it.name}</div>
-                          <p className="text-sm text-muted-foreground mt-1">{it.description}</p>
+                <div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 rounded-2xl bg-gradient-warm flex items-center justify-center text-primary-foreground shadow-soft">
+                      <Icon className="w-6 h-6" />
+                    </div>
+                    <span className="text-primary font-medium">{cat.tagline}</span>
+                  </div>
+                  <h2 className="mt-4 text-3xl font-bold">{cat.category}</h2>
+                  <p className="mt-3 text-muted-foreground leading-relaxed">{cat.summary}</p>
+                  <div className="mt-5 grid sm:grid-cols-1 gap-3">
+                    {cat.items.map((it) => (
+                      <div key={it.name} className="bg-card border border-border rounded-2xl p-4 shadow-soft">
+                        <div className="flex items-start gap-3">
+                          <span className="w-7 h-7 rounded-full bg-primary/10 text-primary flex items-center justify-center flex-shrink-0">
+                            <Check className="w-4 h-4" />
+                          </span>
+                          <div>
+                            <div className="font-semibold">{it.name}</div>
+                            <p className="text-sm text-muted-foreground mt-1">{it.description}</p>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
+                  <Link
+                    to="/contact"
+                    className="inline-block mt-6 px-5 py-2.5 rounded-full bg-gradient-warm text-primary-foreground font-semibold shadow-soft"
+                  >
+                    Book {cat.category.split(" ")[0]} Consultation
+                  </Link>
                 </div>
-              </div>
+              </article>
             );
           })}
         </div>
