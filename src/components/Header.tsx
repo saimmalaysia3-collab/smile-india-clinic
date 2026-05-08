@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { Menu, X, Phone, ChevronDown } from "lucide-react";
 import { services } from "@/data/services";
+import type { ServiceCategory } from "@/data/services";
 
 export function Header() {
   const [open, setOpen] = useState(false);
@@ -31,7 +32,7 @@ export function Header() {
             {servicesOpen && (
               <div className="absolute left-1/2 -translate-x-1/2 top-full pt-3 w-[640px]">
                 <div className="bg-card rounded-xl shadow-warm border border-border p-5 grid grid-cols-2 gap-4">
-                  {services.map((cat) => (
+                  {services.map((cat: ServiceCategory) => (
                     <div key={cat.category}>
                       <div className="text-sm font-semibold text-accent mb-1.5">{cat.category}</div>
                       <ul className="space-y-1">
