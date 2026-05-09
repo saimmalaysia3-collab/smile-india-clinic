@@ -40,7 +40,11 @@ export function Header() {
                       <ul className="space-y-1">
                         {cat.items.map((it) => (
                           <li key={it.name}>
-                            <Link to="/services" className="text-xs text-muted-foreground hover:text-primary">{it.name}</Link>
+                            {it.name === "Dental Implants" ? (
+                              <Link to="/services/dental-implants" className="text-xs text-muted-foreground hover:text-primary">{it.name}</Link>
+                            ) : (
+                              <Link to="/services" className="text-xs text-muted-foreground hover:text-primary">{it.name}</Link>
+                            )}
                           </li>
                         ))}
                       </ul>
