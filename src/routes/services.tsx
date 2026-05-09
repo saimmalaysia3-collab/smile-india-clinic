@@ -64,16 +64,21 @@ function ServicesPage() {
                             <Check className="w-4 h-4" />
                           </span>
                           <div>
-                            <div className="font-semibold">{it.name}</div>
+                            <Link
+                              to="/services/$slug"
+                              params={{ slug: it.slug }}
+                              className="font-semibold hover:text-primary transition-colors"
+                            >
+                              {it.name}
+                            </Link>
                             <p className="text-sm text-muted-foreground mt-1">{it.description}</p>
-                            {it.name === "Dental Implants" && (
-                              <Link
-                                to="/services/dental-implants"
-                                className="inline-block mt-2 text-xs font-semibold text-primary hover:underline"
-                              >
-                                Read full implant guide →
-                              </Link>
-                            )}
+                            <Link
+                              to="/services/$slug"
+                              params={{ slug: it.slug }}
+                              className="inline-block mt-2 text-xs font-semibold text-primary hover:underline"
+                            >
+                              Read full guide →
+                            </Link>
                           </div>
                         </div>
                       </div>
