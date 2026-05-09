@@ -40,11 +40,13 @@ export function Header() {
                       <ul className="space-y-1">
                         {cat.items.map((it) => (
                           <li key={it.name}>
-                            {it.name === "Dental Implants" ? (
-                              <Link to="/services/dental-implants" className="text-xs text-muted-foreground hover:text-primary">{it.name}</Link>
-                            ) : (
-                              <Link to="/services" className="text-xs text-muted-foreground hover:text-primary">{it.name}</Link>
-                            )}
+                            <Link
+                              to="/services/$slug"
+                              params={{ slug: it.slug }}
+                              className="text-xs text-muted-foreground hover:text-primary"
+                            >
+                              {it.name}
+                            </Link>
                           </li>
                         ))}
                       </ul>

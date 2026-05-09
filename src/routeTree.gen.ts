@@ -14,7 +14,7 @@ import { Route as ServicesRouteImport } from './routes/services'
 import { Route as DoctorsRouteImport } from './routes/doctors'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as ServicesDentalImplantsRouteImport } from './routes/services_.dental-implants'
+import { Route as ServicesSlugRouteImport } from './routes/services_.$slug'
 
 const TestimonialsRoute = TestimonialsRouteImport.update({
   id: '/testimonials',
@@ -41,9 +41,9 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ServicesDentalImplantsRoute = ServicesDentalImplantsRouteImport.update({
-  id: '/services_/dental-implants',
-  path: '/services/dental-implants',
+const ServicesSlugRoute = ServicesSlugRouteImport.update({
+  id: '/services_/$slug',
+  path: '/services/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -53,7 +53,7 @@ export interface FileRoutesByFullPath {
   '/doctors': typeof DoctorsRoute
   '/services': typeof ServicesRoute
   '/testimonials': typeof TestimonialsRoute
-  '/services/dental-implants': typeof ServicesDentalImplantsRoute
+  '/services/$slug': typeof ServicesSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -61,7 +61,7 @@ export interface FileRoutesByTo {
   '/doctors': typeof DoctorsRoute
   '/services': typeof ServicesRoute
   '/testimonials': typeof TestimonialsRoute
-  '/services/dental-implants': typeof ServicesDentalImplantsRoute
+  '/services/$slug': typeof ServicesSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -70,7 +70,7 @@ export interface FileRoutesById {
   '/doctors': typeof DoctorsRoute
   '/services': typeof ServicesRoute
   '/testimonials': typeof TestimonialsRoute
-  '/services_/dental-implants': typeof ServicesDentalImplantsRoute
+  '/services_/$slug': typeof ServicesSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -80,7 +80,7 @@ export interface FileRouteTypes {
     | '/doctors'
     | '/services'
     | '/testimonials'
-    | '/services/dental-implants'
+    | '/services/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -88,7 +88,7 @@ export interface FileRouteTypes {
     | '/doctors'
     | '/services'
     | '/testimonials'
-    | '/services/dental-implants'
+    | '/services/$slug'
   id:
     | '__root__'
     | '/'
@@ -96,7 +96,7 @@ export interface FileRouteTypes {
     | '/doctors'
     | '/services'
     | '/testimonials'
-    | '/services_/dental-implants'
+    | '/services_/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -105,7 +105,7 @@ export interface RootRouteChildren {
   DoctorsRoute: typeof DoctorsRoute
   ServicesRoute: typeof ServicesRoute
   TestimonialsRoute: typeof TestimonialsRoute
-  ServicesDentalImplantsRoute: typeof ServicesDentalImplantsRoute
+  ServicesSlugRoute: typeof ServicesSlugRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -145,11 +145,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/services_/dental-implants': {
-      id: '/services_/dental-implants'
-      path: '/services/dental-implants'
-      fullPath: '/services/dental-implants'
-      preLoaderRoute: typeof ServicesDentalImplantsRouteImport
+    '/services_/$slug': {
+      id: '/services_/$slug'
+      path: '/services/$slug'
+      fullPath: '/services/$slug'
+      preLoaderRoute: typeof ServicesSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -161,18 +161,8 @@ const rootRouteChildren: RootRouteChildren = {
   DoctorsRoute: DoctorsRoute,
   ServicesRoute: ServicesRoute,
   TestimonialsRoute: TestimonialsRoute,
-  ServicesDentalImplantsRoute: ServicesDentalImplantsRoute,
+  ServicesSlugRoute: ServicesSlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
