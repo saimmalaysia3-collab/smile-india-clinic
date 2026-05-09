@@ -2,7 +2,7 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useState } from "react";
 import { Check, ChevronLeft, ChevronRight, X } from "lucide-react";
 import { BookButton } from "@/components/BookButton";
-import { articleBySlug, articles, type Block } from "@/data/articles";
+import { articleBySlug, articles, type Block, type GalleryImg } from "@/data/articles";
 
 export const Route = createFileRoute("/services_/$slug")({
   loader: ({ params }) => {
@@ -117,7 +117,7 @@ function ServiceArticlePage() {
             <h2 className="text-2xl lg:text-3xl font-display font-bold text-center text-accent">Treatment Gallery</h2>
             <p className="text-center text-muted-foreground mt-2">Tap any image to zoom in</p>
             <div className="mt-8 grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-              {gallery.map((img, i) => (
+              {gallery.map((img: GalleryImg, i: number) => (
                 <button
                   key={img.src}
                   type="button"
