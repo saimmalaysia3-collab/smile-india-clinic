@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router";
 import { services } from "@/data/services";
 import { Check } from "lucide-react";
 import { BookButton } from "@/components/BookButton";
@@ -65,6 +66,14 @@ function ServicesPage() {
                           <div>
                             <div className="font-semibold">{it.name}</div>
                             <p className="text-sm text-muted-foreground mt-1">{it.description}</p>
+                            {it.name === "Dental Implants" && (
+                              <Link
+                                to="/services/dental-implants"
+                                className="inline-block mt-2 text-xs font-semibold text-primary hover:underline"
+                              >
+                                Read full implant guide →
+                              </Link>
+                            )}
                           </div>
                         </div>
                       </div>
