@@ -14,7 +14,6 @@ import { Route as ServicesRouteImport } from './routes/services'
 import { Route as DoctorsRouteImport } from './routes/doctors'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as ServicesDentalImplantsRouteImport } from './routes/services_.dental-implants'
 
 const TestimonialsRoute = TestimonialsRouteImport.update({
   id: '/testimonials',
@@ -41,11 +40,6 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ServicesDentalImplantsRoute = ServicesDentalImplantsRouteImport.update({
-  id: '/services_/dental-implants',
-  path: '/services/dental-implants',
-  getParentRoute: () => rootRouteImport,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -53,7 +47,6 @@ export interface FileRoutesByFullPath {
   '/doctors': typeof DoctorsRoute
   '/services': typeof ServicesRoute
   '/testimonials': typeof TestimonialsRoute
-  '/services/dental-implants': typeof ServicesDentalImplantsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -61,7 +54,6 @@ export interface FileRoutesByTo {
   '/doctors': typeof DoctorsRoute
   '/services': typeof ServicesRoute
   '/testimonials': typeof TestimonialsRoute
-  '/services/dental-implants': typeof ServicesDentalImplantsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -70,33 +62,13 @@ export interface FileRoutesById {
   '/doctors': typeof DoctorsRoute
   '/services': typeof ServicesRoute
   '/testimonials': typeof TestimonialsRoute
-  '/services_/dental-implants': typeof ServicesDentalImplantsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths:
-    | '/'
-    | '/contact'
-    | '/doctors'
-    | '/services'
-    | '/testimonials'
-    | '/services/dental-implants'
+  fullPaths: '/' | '/contact' | '/doctors' | '/services' | '/testimonials'
   fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/'
-    | '/contact'
-    | '/doctors'
-    | '/services'
-    | '/testimonials'
-    | '/services/dental-implants'
-  id:
-    | '__root__'
-    | '/'
-    | '/contact'
-    | '/doctors'
-    | '/services'
-    | '/testimonials'
-    | '/services_/dental-implants'
+  to: '/' | '/contact' | '/doctors' | '/services' | '/testimonials'
+  id: '__root__' | '/' | '/contact' | '/doctors' | '/services' | '/testimonials'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -105,7 +77,6 @@ export interface RootRouteChildren {
   DoctorsRoute: typeof DoctorsRoute
   ServicesRoute: typeof ServicesRoute
   TestimonialsRoute: typeof TestimonialsRoute
-  ServicesDentalImplantsRoute: typeof ServicesDentalImplantsRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -145,13 +116,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/services_/dental-implants': {
-      id: '/services_/dental-implants'
-      path: '/services/dental-implants'
-      fullPath: '/services/dental-implants'
-      preLoaderRoute: typeof ServicesDentalImplantsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
   }
 }
 
@@ -161,7 +125,6 @@ const rootRouteChildren: RootRouteChildren = {
   DoctorsRoute: DoctorsRoute,
   ServicesRoute: ServicesRoute,
   TestimonialsRoute: TestimonialsRoute,
-  ServicesDentalImplantsRoute: ServicesDentalImplantsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
