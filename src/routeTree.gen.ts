@@ -10,15 +10,25 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TestimonialsRouteImport } from './routes/testimonials'
+import { Route as StaffRouteImport } from './routes/staff'
 import { Route as ServicesRouteImport } from './routes/services'
 import { Route as DoctorsRouteImport } from './routes/doctors'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as StaffIndexRouteImport } from './routes/staff.index'
+import { Route as StaffLoginRouteImport } from './routes/staff_.login'
+import { Route as StaffMessagesRouteImport } from './routes/staff.messages'
+import { Route as StaffAppointmentsRouteImport } from './routes/staff.appointments'
 import { Route as ServicesSlugRouteImport } from './routes/services_.$slug'
 
 const TestimonialsRoute = TestimonialsRouteImport.update({
   id: '/testimonials',
   path: '/testimonials',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StaffRoute = StaffRouteImport.update({
+  id: '/staff',
+  path: '/staff',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ServicesRoute = ServicesRouteImport.update({
@@ -41,6 +51,26 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const StaffIndexRoute = StaffIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => StaffRoute,
+} as any)
+const StaffLoginRoute = StaffLoginRouteImport.update({
+  id: '/staff_/login',
+  path: '/staff/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StaffMessagesRoute = StaffMessagesRouteImport.update({
+  id: '/messages',
+  path: '/messages',
+  getParentRoute: () => StaffRoute,
+} as any)
+const StaffAppointmentsRoute = StaffAppointmentsRouteImport.update({
+  id: '/appointments',
+  path: '/appointments',
+  getParentRoute: () => StaffRoute,
+} as any)
 const ServicesSlugRoute = ServicesSlugRouteImport.update({
   id: '/services_/$slug',
   path: '/services/$slug',
@@ -52,8 +82,13 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/doctors': typeof DoctorsRoute
   '/services': typeof ServicesRoute
+  '/staff': typeof StaffRouteWithChildren
   '/testimonials': typeof TestimonialsRoute
   '/services/$slug': typeof ServicesSlugRoute
+  '/staff/appointments': typeof StaffAppointmentsRoute
+  '/staff/messages': typeof StaffMessagesRoute
+  '/staff/login': typeof StaffLoginRoute
+  '/staff/': typeof StaffIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -62,6 +97,10 @@ export interface FileRoutesByTo {
   '/services': typeof ServicesRoute
   '/testimonials': typeof TestimonialsRoute
   '/services/$slug': typeof ServicesSlugRoute
+  '/staff/appointments': typeof StaffAppointmentsRoute
+  '/staff/messages': typeof StaffMessagesRoute
+  '/staff/login': typeof StaffLoginRoute
+  '/staff': typeof StaffIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -69,8 +108,13 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/doctors': typeof DoctorsRoute
   '/services': typeof ServicesRoute
+  '/staff': typeof StaffRouteWithChildren
   '/testimonials': typeof TestimonialsRoute
   '/services_/$slug': typeof ServicesSlugRoute
+  '/staff/appointments': typeof StaffAppointmentsRoute
+  '/staff/messages': typeof StaffMessagesRoute
+  '/staff_/login': typeof StaffLoginRoute
+  '/staff/': typeof StaffIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -79,8 +123,13 @@ export interface FileRouteTypes {
     | '/contact'
     | '/doctors'
     | '/services'
+    | '/staff'
     | '/testimonials'
     | '/services/$slug'
+    | '/staff/appointments'
+    | '/staff/messages'
+    | '/staff/login'
+    | '/staff/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -89,14 +138,23 @@ export interface FileRouteTypes {
     | '/services'
     | '/testimonials'
     | '/services/$slug'
+    | '/staff/appointments'
+    | '/staff/messages'
+    | '/staff/login'
+    | '/staff'
   id:
     | '__root__'
     | '/'
     | '/contact'
     | '/doctors'
     | '/services'
+    | '/staff'
     | '/testimonials'
     | '/services_/$slug'
+    | '/staff/appointments'
+    | '/staff/messages'
+    | '/staff_/login'
+    | '/staff/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -104,8 +162,10 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   DoctorsRoute: typeof DoctorsRoute
   ServicesRoute: typeof ServicesRoute
+  StaffRoute: typeof StaffRouteWithChildren
   TestimonialsRoute: typeof TestimonialsRoute
   ServicesSlugRoute: typeof ServicesSlugRoute
+  StaffLoginRoute: typeof StaffLoginRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -115,6 +175,13 @@ declare module '@tanstack/react-router' {
       path: '/testimonials'
       fullPath: '/testimonials'
       preLoaderRoute: typeof TestimonialsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/staff': {
+      id: '/staff'
+      path: '/staff'
+      fullPath: '/staff'
+      preLoaderRoute: typeof StaffRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/services': {
@@ -145,6 +212,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/staff/': {
+      id: '/staff/'
+      path: '/'
+      fullPath: '/staff/'
+      preLoaderRoute: typeof StaffIndexRouteImport
+      parentRoute: typeof StaffRoute
+    }
+    '/staff_/login': {
+      id: '/staff_/login'
+      path: '/staff/login'
+      fullPath: '/staff/login'
+      preLoaderRoute: typeof StaffLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/staff/messages': {
+      id: '/staff/messages'
+      path: '/messages'
+      fullPath: '/staff/messages'
+      preLoaderRoute: typeof StaffMessagesRouteImport
+      parentRoute: typeof StaffRoute
+    }
+    '/staff/appointments': {
+      id: '/staff/appointments'
+      path: '/appointments'
+      fullPath: '/staff/appointments'
+      preLoaderRoute: typeof StaffAppointmentsRouteImport
+      parentRoute: typeof StaffRoute
+    }
     '/services_/$slug': {
       id: '/services_/$slug'
       path: '/services/$slug'
@@ -155,24 +250,30 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface StaffRouteChildren {
+  StaffAppointmentsRoute: typeof StaffAppointmentsRoute
+  StaffMessagesRoute: typeof StaffMessagesRoute
+  StaffIndexRoute: typeof StaffIndexRoute
+}
+
+const StaffRouteChildren: StaffRouteChildren = {
+  StaffAppointmentsRoute: StaffAppointmentsRoute,
+  StaffMessagesRoute: StaffMessagesRoute,
+  StaffIndexRoute: StaffIndexRoute,
+}
+
+const StaffRouteWithChildren = StaffRoute._addFileChildren(StaffRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ContactRoute: ContactRoute,
   DoctorsRoute: DoctorsRoute,
   ServicesRoute: ServicesRoute,
+  StaffRoute: StaffRouteWithChildren,
   TestimonialsRoute: TestimonialsRoute,
   ServicesSlugRoute: ServicesSlugRoute,
+  StaffLoginRoute: StaffLoginRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
