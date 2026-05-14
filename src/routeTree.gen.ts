@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TestimonialsRouteImport } from './routes/testimonials'
+import { Route as StaffRouteImport } from './routes/staff'
 import { Route as ServicesRouteImport } from './routes/services'
 import { Route as DoctorsRouteImport } from './routes/doctors'
 import { Route as ContactRouteImport } from './routes/contact'
@@ -19,6 +20,11 @@ import { Route as ServicesSlugRouteImport } from './routes/services_.$slug'
 const TestimonialsRoute = TestimonialsRouteImport.update({
   id: '/testimonials',
   path: '/testimonials',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StaffRoute = StaffRouteImport.update({
+  id: '/staff',
+  path: '/staff',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ServicesRoute = ServicesRouteImport.update({
@@ -52,6 +58,7 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/doctors': typeof DoctorsRoute
   '/services': typeof ServicesRoute
+  '/staff': typeof StaffRoute
   '/testimonials': typeof TestimonialsRoute
   '/services/$slug': typeof ServicesSlugRoute
 }
@@ -60,6 +67,7 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/doctors': typeof DoctorsRoute
   '/services': typeof ServicesRoute
+  '/staff': typeof StaffRoute
   '/testimonials': typeof TestimonialsRoute
   '/services/$slug': typeof ServicesSlugRoute
 }
@@ -69,6 +77,7 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/doctors': typeof DoctorsRoute
   '/services': typeof ServicesRoute
+  '/staff': typeof StaffRoute
   '/testimonials': typeof TestimonialsRoute
   '/services_/$slug': typeof ServicesSlugRoute
 }
@@ -79,6 +88,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/doctors'
     | '/services'
+    | '/staff'
     | '/testimonials'
     | '/services/$slug'
   fileRoutesByTo: FileRoutesByTo
@@ -87,6 +97,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/doctors'
     | '/services'
+    | '/staff'
     | '/testimonials'
     | '/services/$slug'
   id:
@@ -95,6 +106,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/doctors'
     | '/services'
+    | '/staff'
     | '/testimonials'
     | '/services_/$slug'
   fileRoutesById: FileRoutesById
@@ -104,6 +116,7 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   DoctorsRoute: typeof DoctorsRoute
   ServicesRoute: typeof ServicesRoute
+  StaffRoute: typeof StaffRoute
   TestimonialsRoute: typeof TestimonialsRoute
   ServicesSlugRoute: typeof ServicesSlugRoute
 }
@@ -115,6 +128,13 @@ declare module '@tanstack/react-router' {
       path: '/testimonials'
       fullPath: '/testimonials'
       preLoaderRoute: typeof TestimonialsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/staff': {
+      id: '/staff'
+      path: '/staff'
+      fullPath: '/staff'
+      preLoaderRoute: typeof StaffRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/services': {
@@ -160,9 +180,20 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   DoctorsRoute: DoctorsRoute,
   ServicesRoute: ServicesRoute,
+  StaffRoute: StaffRoute,
   TestimonialsRoute: TestimonialsRoute,
   ServicesSlugRoute: ServicesSlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
