@@ -17,6 +17,7 @@ import { Route as ContactRouteImport } from './routes/contact'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as StaffIndexRouteImport } from './routes/staff.index'
 import { Route as StaffLoginRouteImport } from './routes/staff_.login'
+import { Route as StaffAppointmentsRouteImport } from './routes/staff.appointments'
 import { Route as ServicesSlugRouteImport } from './routes/services_.$slug'
 
 const TestimonialsRoute = TestimonialsRouteImport.update({
@@ -59,6 +60,11 @@ const StaffLoginRoute = StaffLoginRouteImport.update({
   path: '/staff/login',
   getParentRoute: () => rootRouteImport,
 } as any)
+const StaffAppointmentsRoute = StaffAppointmentsRouteImport.update({
+  id: '/appointments',
+  path: '/appointments',
+  getParentRoute: () => StaffRoute,
+} as any)
 const ServicesSlugRoute = ServicesSlugRouteImport.update({
   id: '/services_/$slug',
   path: '/services/$slug',
@@ -73,6 +79,7 @@ export interface FileRoutesByFullPath {
   '/staff': typeof StaffRouteWithChildren
   '/testimonials': typeof TestimonialsRoute
   '/services/$slug': typeof ServicesSlugRoute
+  '/staff/appointments': typeof StaffAppointmentsRoute
   '/staff/login': typeof StaffLoginRoute
   '/staff/': typeof StaffIndexRoute
 }
@@ -83,6 +90,7 @@ export interface FileRoutesByTo {
   '/services': typeof ServicesRoute
   '/testimonials': typeof TestimonialsRoute
   '/services/$slug': typeof ServicesSlugRoute
+  '/staff/appointments': typeof StaffAppointmentsRoute
   '/staff/login': typeof StaffLoginRoute
   '/staff': typeof StaffIndexRoute
 }
@@ -95,6 +103,7 @@ export interface FileRoutesById {
   '/staff': typeof StaffRouteWithChildren
   '/testimonials': typeof TestimonialsRoute
   '/services_/$slug': typeof ServicesSlugRoute
+  '/staff/appointments': typeof StaffAppointmentsRoute
   '/staff_/login': typeof StaffLoginRoute
   '/staff/': typeof StaffIndexRoute
 }
@@ -108,6 +117,7 @@ export interface FileRouteTypes {
     | '/staff'
     | '/testimonials'
     | '/services/$slug'
+    | '/staff/appointments'
     | '/staff/login'
     | '/staff/'
   fileRoutesByTo: FileRoutesByTo
@@ -118,6 +128,7 @@ export interface FileRouteTypes {
     | '/services'
     | '/testimonials'
     | '/services/$slug'
+    | '/staff/appointments'
     | '/staff/login'
     | '/staff'
   id:
@@ -129,6 +140,7 @@ export interface FileRouteTypes {
     | '/staff'
     | '/testimonials'
     | '/services_/$slug'
+    | '/staff/appointments'
     | '/staff_/login'
     | '/staff/'
   fileRoutesById: FileRoutesById
@@ -202,6 +214,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StaffLoginRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/staff/appointments': {
+      id: '/staff/appointments'
+      path: '/appointments'
+      fullPath: '/staff/appointments'
+      preLoaderRoute: typeof StaffAppointmentsRouteImport
+      parentRoute: typeof StaffRoute
+    }
     '/services_/$slug': {
       id: '/services_/$slug'
       path: '/services/$slug'
@@ -213,10 +232,12 @@ declare module '@tanstack/react-router' {
 }
 
 interface StaffRouteChildren {
+  StaffAppointmentsRoute: typeof StaffAppointmentsRoute
   StaffIndexRoute: typeof StaffIndexRoute
 }
 
 const StaffRouteChildren: StaffRouteChildren = {
+  StaffAppointmentsRoute: StaffAppointmentsRoute,
   StaffIndexRoute: StaffIndexRoute,
 }
 
