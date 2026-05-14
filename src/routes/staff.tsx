@@ -17,14 +17,15 @@ export const Route = createFileRoute("/staff")({
   component: StaffLayout,
 });
 
-const NAV = [
+type NavItem = { to: string; label: string; icon: typeof LayoutDashboard; exact?: boolean };
+const NAV: NavItem[] = [
   { to: "/staff", label: "Dashboard", icon: LayoutDashboard, exact: true },
   { to: "/staff/appointments", label: "Appointments", icon: CalendarDays },
   { to: "/staff/messages", label: "Messages", icon: Mail },
   { to: "/staff/doctors", label: "Doctors", icon: Stethoscope },
   { to: "/staff/patients", label: "Patients", icon: Users },
   { to: "/staff/treatments", label: "Treatment Plans", icon: ClipboardList },
-] as const;
+];
 
 function StaffLayout() {
   const { user, isStaff, loading, signOut } = useAuth();
@@ -75,7 +76,7 @@ function StaffLayout() {
             return (
               <Link
                 key={n.to}
-                to={n.to}
+                to={n.to as any}
                 className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium transition ${
                   active ? "bg-primary text-primary-foreground" : "text-foreground hover:bg-muted"
                 }`}
