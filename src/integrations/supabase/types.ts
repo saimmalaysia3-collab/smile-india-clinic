@@ -248,6 +248,147 @@ export type Database = {
         }
         Relationships: []
       }
+      service_articles: {
+        Row: {
+          active: boolean
+          body: Json
+          category: string
+          created_at: string
+          cta_service: string | null
+          gallery: Json
+          hero_image_key: string | null
+          id: string
+          lead: string | null
+          meta_description: string | null
+          meta_title: string | null
+          short_description: string | null
+          slug: string
+          sort_order: number
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          body?: Json
+          category: string
+          created_at?: string
+          cta_service?: string | null
+          gallery?: Json
+          hero_image_key?: string | null
+          id?: string
+          lead?: string | null
+          meta_description?: string | null
+          meta_title?: string | null
+          short_description?: string | null
+          slug: string
+          sort_order?: number
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          body?: Json
+          category?: string
+          created_at?: string
+          cta_service?: string | null
+          gallery?: Json
+          hero_image_key?: string | null
+          id?: string
+          lead?: string | null
+          meta_description?: string | null
+          meta_title?: string | null
+          short_description?: string | null
+          slug?: string
+          sort_order?: number
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      services: {
+        Row: {
+          active: boolean
+          category: string
+          created_at: string
+          doctor_name: string | null
+          icon: string | null
+          id: string
+          image_key: string | null
+          sort_order: number
+          summary: string | null
+          tagline: string | null
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          category: string
+          created_at?: string
+          doctor_name?: string | null
+          icon?: string | null
+          id?: string
+          image_key?: string | null
+          sort_order?: number
+          summary?: string | null
+          tagline?: string | null
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          category?: string
+          created_at?: string
+          doctor_name?: string | null
+          icon?: string | null
+          id?: string
+          image_key?: string | null
+          sort_order?: number
+          summary?: string | null
+          tagline?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      testimonials: {
+        Row: {
+          active: boolean
+          city: string | null
+          created_at: string
+          id: string
+          image_key: string | null
+          name: string
+          quote: string
+          rating: number
+          sort_order: number
+          treatment: string | null
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          city?: string | null
+          created_at?: string
+          id?: string
+          image_key?: string | null
+          name: string
+          quote: string
+          rating?: number
+          sort_order?: number
+          treatment?: string | null
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          city?: string | null
+          created_at?: string
+          id?: string
+          image_key?: string | null
+          name?: string
+          quote?: string
+          rating?: number
+          sort_order?: number
+          treatment?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       treatment_documents: {
         Row: {
           created_at: string
