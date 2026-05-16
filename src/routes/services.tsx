@@ -1,8 +1,9 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { Link } from "@tanstack/react-router";
-import { services } from "@/data/services";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
 import { Check } from "lucide-react";
 import { BookButton } from "@/components/BookButton";
+import { listServicesWithItems, resolveIcon } from "@/lib/content";
+import { resolveImage } from "@/lib/image-registry";
 
 export const Route = createFileRoute("/services")({
   head: () => ({
@@ -17,6 +18,11 @@ export const Route = createFileRoute("/services")({
 });
 
 function ServicesPage() {
+  const { data: services = [] } = useQuery({
+    queryKey: ["services-with-items"],
+    queryFn: listServicesWithItems,
+  });
+
   return (
     <>
       <section className="bg-gradient-hero text-primary-foreground py-16">
@@ -29,17 +35,17 @@ function ServicesPage() {
       <section className="py-16">
         <div className="mx-auto max-w-6xl px-6 space-y-20">
           {services.map((cat, idx) => {
-            const Icon = cat.icon;
+            const Icon = resolveIcon(cat.icon);
             const reverse = idx % 2 === 1;
             return (
               <article
-                key={cat.category}
+                key={cat.id}
                 id={cat.category.toLowerCase().replace(/\s+/g, "-")}
                 className="grid lg:grid-cols-2 gap-10 items-center"
               >
                 <div className={`overflow-hidden rounded-3xl shadow-warm ${reverse ? "lg:order-2" : ""}`}>
                   <img
-                    src={cat.image}
+                    src={resolveImage(cat.image_key)}
                     alt={`${cat.category} at Smile Dental Clinic`}
                     width={768}
                     height={512}
@@ -58,7 +64,7 @@ function ServicesPage() {
                   <p className="mt-3 text-muted-foreground leading-relaxed">{cat.summary}</p>
                   <div className="mt-5 grid sm:grid-cols-1 gap-3">
                     {cat.items.map((it) => (
-                      <div key={it.name} className="bg-card border border-border rounded-2xl p-4 shadow-soft">
+                      <div key={it.slug} className="bg-card border border-border rounded-2xl p-4 shadow-soft">
                         <div className="flex items-start gap-3">
                           <span className="w-7 h-7 rounded-full bg-primary/10 text-primary flex items-center justify-center flex-shrink-0">
                             <Check className="w-4 h-4" />
