@@ -1,6 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { ServicesManager } from '@/components/admin/ServicesManager'
+import { AdminLogin } from '@/components/admin/AdminLogin'
 
 export const Route = createFileRoute('/admin')({
   component: AdminDashboard,
@@ -15,6 +16,8 @@ function AdminDashboard() {
           Manage website content and realtime updates.
         </p>
       </div>
+
+      <AdminLogin />
 
       <div className="grid gap-6 md:grid-cols-3">
         <Card>
