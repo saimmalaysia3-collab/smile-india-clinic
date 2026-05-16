@@ -1,6 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { testimonials } from "@/data/doctors";
+import { useQuery } from "@tanstack/react-query";
 import { Star, Quote } from "lucide-react";
+import { listTestimonials } from "@/lib/content";
+import { resolveImage } from "@/lib/image-registry";
 
 export const Route = createFileRoute("/testimonials")({
   head: () => ({
@@ -20,6 +22,11 @@ const videos = [
 ];
 
 function TestimonialsPage() {
+  const { data: testimonials = [] } = useQuery({
+    queryKey: ["testimonials"],
+    queryFn: listTestimonials,
+  });
+
   return (
     <>
       <section className="bg-gradient-hero text-primary-foreground py-16">
@@ -47,8 +54,8 @@ function TestimonialsPage() {
           <h2 className="text-3xl font-bold text-center">Smile Transformations</h2>
           <div className="mt-10 grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {testimonials.map((t) => (
-              <div key={t.name} className="bg-card rounded-2xl overflow-hidden border border-border shadow-soft">
-                <img src={t.image} alt={t.name} loading="lazy" width={768} height={768} className="w-full aspect-square object-cover" />
+              <div key={t.id} className="bg-card rounded-2xl overflow-hidden border border-border shadow-soft">
+                <img src={resolveImage(t.image_key)} alt={t.name} loading="lazy" width={768} height={768} className="w-full aspect-square object-cover" />
                 <div className="p-5 relative">
                   <Quote className="absolute -top-4 right-5 w-8 h-8 text-primary/30" />
                   <div className="flex gap-0.5 text-primary">
@@ -57,7 +64,7 @@ function TestimonialsPage() {
                   <p className="mt-3 text-sm italic text-muted-foreground">"{t.quote}"</p>
                   <div className="mt-4">
                     <div className="font-semibold">{t.name}</div>
-                    <div className="text-xs text-muted-foreground">{t.city} · {t.treatment}</div>
+                    <div className="text-xs text-muted-foreground">{[t.city, t.treatment].filter(Boolean).join(" · ")}</div>
                   </div>
                 </div>
               </div>
