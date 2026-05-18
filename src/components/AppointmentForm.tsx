@@ -20,6 +20,7 @@ import {
   isSlotTaken,
   saveBooking,
   getDoctorForService,
+  refreshBookedForDate,
   type Booking,
 } from "@/lib/booking-store";
 
@@ -50,6 +51,8 @@ export function AppointmentForm({ defaultService, defaultDoctor, onSuccess, comp
     defaultDoctor ?? (defaultService ? getDoctorForService(defaultService) ?? "" : "")
   );
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [submitting, setSubmitting] = useState(false);
+  const [, setBookedTick] = useState(0);
 
   // Auto-select doctor when service changes
   useEffect(() => {
@@ -58,7 +61,17 @@ export function AppointmentForm({ defaultService, defaultDoctor, onSuccess, comp
     if (auto) setDoctor(auto);
   }, [service]);
 
-  const bookedTimes = useMemo(() => (date ? getBookedTimesForDate(date) : []), [date, submitted]);
+  // Refresh booked slots from server when date changes
+  useEffect(() => {
+    if (!date) return;
+    refreshBookedForDate(date).then(() => setBookedTick((n) => n + 1));
+  }, [date]);
+
+  const bookedTimes = useMemo(
+    () => (date ? getBookedTimesForDate(date) : []),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [date, submitted]
+  );
 
   if (submitted) {
     return <SuccessPanel booking={submitted} onReset={() => {
@@ -70,8 +83,9 @@ export function AppointmentForm({ defaultService, defaultDoctor, onSuccess, comp
     }} />;
   }
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (submitting) return;
     const fd = new FormData(e.currentTarget);
     const raw = {
       name: String(fd.get("name") ?? ""),
@@ -94,31 +108,34 @@ export function AppointmentForm({ defaultService, defaultDoctor, onSuccess, comp
       toast.error("Please fix the highlighted fields");
       return;
     }
-    const { taken, duplicate } = isSlotTaken(result.data.date, result.data.time, result.data.phone);
+    await refreshBookedForDate(result.data.date);
+    const { taken } = isSlotTaken(result.data.date, result.data.time);
     if (taken) {
       setErrors({ time: "This slot is already booked. Please choose another." });
       toast.error("Slot already booked");
       return;
     }
-    if (duplicate) {
-      setErrors({ phone: "You already have a booking on this date with this number." });
-      toast.error("Duplicate booking detected");
-      return;
+    try {
+      setSubmitting(true);
+      const booking = await saveBooking({
+        name: result.data.name,
+        phone: result.data.phone,
+        email: result.data.email || undefined,
+        service: result.data.service,
+        doctor: result.data.doctor,
+        date: result.data.date,
+        time: result.data.time,
+        notes: result.data.notes || undefined,
+      });
+      setErrors({});
+      toast.success(`Appointment requested · ${booking.ref}`);
+      setSubmitted(booking);
+      onSuccess?.(booking);
+    } catch (err) {
+      toast.error("Could not save appointment. Please try again.");
+    } finally {
+      setSubmitting(false);
     }
-    const booking = saveBooking({
-      name: result.data.name,
-      phone: result.data.phone,
-      email: result.data.email || undefined,
-      service: result.data.service,
-      doctor: result.data.doctor,
-      date: result.data.date,
-      time: result.data.time,
-      notes: result.data.notes || undefined,
-    });
-    setErrors({});
-    toast.success(`Appointment confirmed · ${booking.ref}`);
-    setSubmitted(booking);
-    onSuccess?.(booking);
   };
 
   return (
@@ -215,8 +232,8 @@ export function AppointmentForm({ defaultService, defaultDoctor, onSuccess, comp
         <Textarea name="notes" rows={3} maxLength={500} placeholder="Tell us about your concern, pain level, or any medical history…" />
       </Field>
 
-      <Button type="submit" className="w-full bg-gradient-warm text-primary-foreground font-semibold py-6 rounded-full">
-        Request Appointment
+      <Button type="submit" disabled={submitting} className="w-full bg-gradient-warm text-primary-foreground font-semibold py-6 rounded-full">
+        {submitting ? "Submitting…" : "Request Appointment"}
       </Button>
       <p className="text-xs text-muted-foreground text-center">
         By submitting, you agree to be contacted on the number provided.
