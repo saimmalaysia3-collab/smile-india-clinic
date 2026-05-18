@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { ArrowRight } from "lucide-react";
+import { BookButton } from "@/components/BookButton";
 import { listServicesWithItems } from "@/lib/content";
 import { resolveImage } from "@/lib/image-registry";
 
