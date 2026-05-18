@@ -28,6 +28,7 @@ const schema = z.object({
   name: z.string().trim().min(2, "Name must be at least 2 characters").max(80),
   phone: z.string().trim().regex(/^[6-9]\d{9}$/, "Enter a valid 10-digit Indian mobile number"),
   email: z.string().trim().email("Enter a valid email").max(200).optional().or(z.literal("")),
+  address: z.string().trim().max(250).optional().or(z.literal("")),
   service: z.string().min(1, "Please select a service"),
   doctor: z.string().min(1, "Please select a doctor"),
   date: z.date({ required_error: "Please pick a date" }),
@@ -91,6 +92,7 @@ export function AppointmentForm({ defaultService, defaultDoctor, onSuccess, comp
       name: String(fd.get("name") ?? ""),
       phone: String(fd.get("phone") ?? ""),
       email: String(fd.get("email") ?? ""),
+      address: String(fd.get("address") ?? ""),
       service,
       doctor,
       date: date as Date,
@@ -125,7 +127,10 @@ export function AppointmentForm({ defaultService, defaultDoctor, onSuccess, comp
         doctor: result.data.doctor,
         date: result.data.date,
         time: result.data.time,
-        notes: result.data.notes || undefined,
+        notes: [
+          result.data.address ? `Address: ${result.data.address}` : "",
+          result.data.notes || "",
+        ].filter(Boolean).join("\n") || undefined,
       });
       setErrors({});
       toast.success(`Appointment requested · ${booking.ref}`);
@@ -151,6 +156,10 @@ export function AppointmentForm({ defaultService, defaultDoctor, onSuccess, comp
 
       <Field label="Email (optional)" error={errors.email}>
         <Input name="email" type="email" placeholder="you@example.com" maxLength={200} />
+      </Field>
+
+      <Field label="Residential Address" error={errors.address}>
+        <Input name="address" placeholder="House / Street, Area, City" maxLength={250} />
       </Field>
 
       <div className="grid sm:grid-cols-2 gap-4">
