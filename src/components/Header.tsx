@@ -36,18 +36,18 @@ export function Header() {
               Services <ChevronDown className="w-3.5 h-3.5" />
             </Link>
             {servicesOpen && (
-              <div className="absolute left-1/2 -translate-x-1/2 top-full pt-3 w-[640px]">
-                <div className="bg-card rounded-xl shadow-warm border border-border p-5 grid grid-cols-2 gap-4">
+              <div className="absolute left-1/2 -translate-x-1/2 top-full pt-3 w-[min(95vw,1100px)]">
+                <div className="bg-card rounded-2xl shadow-warm border border-border p-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-5">
                   {services.map((cat) => (
                     <div key={cat.category}>
-                      <div className="text-sm font-semibold text-accent mb-1.5">{cat.category}</div>
-                      <ul className="space-y-1">
+                      <div className="text-sm font-semibold text-accent mb-2 leading-tight">{cat.category}</div>
+                      <ul className="space-y-1.5">
                         {cat.items.map((it) => (
                           <li key={it.slug}>
                             <Link
                               to="/services/$slug"
                               params={{ slug: it.slug }}
-                              className="text-xs text-muted-foreground hover:text-primary"
+                              className="text-xs text-muted-foreground hover:text-primary leading-snug block"
                             >
                               {it.name}
                             </Link>
